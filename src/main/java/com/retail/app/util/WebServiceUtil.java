@@ -1,6 +1,5 @@
 package com.retail.app.util;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +17,15 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 @Service
 public final class WebServiceUtil {
-	
+
 	private static final Logger logger = Logger.getLogger(WebServiceUtil.class);
 
-	
 	public static void printLoggerWhenDebugEnabled(Logger logger, String log) {
 		if (logger.isDebugEnabled()) {
 			logger.debug(log);
 		}
 	}
-	
+
 	public List<Item> generateWebServiceCallForProductName(String url) throws Exception {
 		List<Item> itemTOList = new ArrayList<Item>();
 		printLoggerWhenDebugEnabled(logger, "generateWebServiceCallForProductName starts");
@@ -46,13 +44,12 @@ public final class WebServiceUtil {
 
 			String serviceResponse = clientResponse.getEntity(String.class);
 
-
-			if (serviceResponse != null){
-				ProductsTO productsTO =  gson.fromJson(serviceResponse, ProductsTO.class);
-				System.out.println("Name Of productsTO: "+productsTO.getProductCompositeResponse().getItems().size());  
+			if (serviceResponse != null) {
+				ProductsTO productsTO = gson.fromJson(serviceResponse, ProductsTO.class);
+				logger.debug("Name Of productsTO: " + productsTO.getProductCompositeResponse().getItems().size());
 				itemTOList = productsTO.getProductCompositeResponse().getItems();
 			}
-              
+
 			printLoggerWhenDebugEnabled(logger, "Client response :::" + clientResponse);
 
 			endTime = System.currentTimeMillis();
@@ -63,9 +60,6 @@ public final class WebServiceUtil {
 			throw new Exception("Bad Request");
 		}
 
-		
 	}
-	
-	
-	
+
 }
