@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 @Configuration
-@ComponentScan(basePackages = "com.homedepot.di.px.importorderservices")
+@ComponentScan(basePackages = "com.retail.app")
 @EnableWebMvc
 @EnableSwagger2 //Loads the spring beans required by the framework
 @PropertySource("classpath:swagger.properties")
@@ -25,8 +25,8 @@ public class SwaggerConfig {
     @Bean
     ApiInfo apiInfo() {
         ApiInfo apiInfo = new ApiInfo(
-        "Import Order Servcies",
-        "These Domain Services perform CRUD operations on Rock Blocks Data Base",
+        "My Retail Servcies",
+        "This app exposes Product API",
         "1.0.0",
         "",
         "",
@@ -39,7 +39,7 @@ public class SwaggerConfig {
     public Docket customImplementation(){
         return new Docket(DocumentationType.SWAGGER_2).
         		select()
-                .apis(RequestHandlerSelectors.basePackage("com.homedepot.di.px.importorderservices"))
+                .apis(RequestHandlerSelectors.basePackage("com.retail.app"))
                 .build()
                 .apiInfo(apiInfo());
     }

@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 
 import org.springframework.data.annotation.Id;
 
+/**
+ * @author Libin
+ *
+ */
 public class ProductPriceInfo {
 
 

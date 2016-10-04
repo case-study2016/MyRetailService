@@ -3,6 +3,7 @@ package com.retail.app.to;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
+ * @author Libin
  * Used by exception handler
  **/
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringMVCServerCodegen", date = "2016-03-01T11:23:21.369-05:00")

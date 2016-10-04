@@ -1,5 +1,9 @@
 package com.retail.app.util;
 
+/**
+ * @author Libin
+ * Constants for the application
+ */
 public final class Constants {
 	public static final String HOST_NAME = "api.target.com";
 	public static final String REQUEST_PATH_URL = "/products/v3/";

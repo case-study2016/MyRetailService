@@ -15,6 +15,10 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
+/**
+ * @author Libin
+ *
+ */
 @Service
 public final class WebServiceUtil {
 

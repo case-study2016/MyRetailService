@@ -13,6 +13,10 @@ import com.retail.app.to.ProductPriceInfo;
 import com.retail.app.util.Constants;
 import com.retail.app.util.WebServiceUtil;
 
+/**
+ * @author Libin
+ * This is the helper class 
+ */
 @Service
 public class ProductDetailsManager {
 	private static final Logger logger = LoggerFactory.getLogger(ProductDetailsManager.class);
@@ -23,6 +27,10 @@ public class ProductDetailsManager {
 	@Autowired
 	private ProductPriceInfoRepository productPriceInfoRepository;
 
+	/*
+	 * Retrieve the product name from external API
+	 * based on product id
+	 */
 	public String getProductName(Integer id) throws Exception {
 		String productName = null;
 		String errorMessage = null;
@@ -39,18 +47,13 @@ public class ProductDetailsManager {
 		}
 		return productName;
 	}
-
+	
+	/*
+	 * Retrieve the product id ,product price and currency code from MongoDB
+	 * based on product id
+	 */
 	public ProductPriceInfo getProductPriceInfo(String id) {
 		ProductPriceInfo productPriceInfo = null;
-		/*
-		 * TODO Create a helper service to insert following records to mongodb
-		 * 1. product id 2. product price 3. currency code
-		 * 
-		 * Retrieve the above information 2, 3 from db based on product id
-		 * 
-		 * 
-		 * 
-		 */
 
 		productPriceInfo = productPriceInfoRepository.findOne(id);
 		return productPriceInfo;

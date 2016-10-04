@@ -38,7 +38,12 @@ import com.retail.app.services.ProductsAPI;
 import com.retail.app.to.CurrentPrice;
 import com.retail.app.to.ProductPriceInfo;
 import com.retail.app.to.ProductResponseTO;
+import com.retail.app.util.Constants;
 
+/**
+ * @author Libin
+ * This is the test case based on Spring JUnit
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RetailApplication.class)
 @WebAppConfiguration
@@ -56,8 +61,9 @@ public class ProductsAPITest {
 	// Test RestTemplate to invoke the APIs.
 	private RestTemplate restTemplate = new TestRestTemplate();
 
-	// This is to test the creation of product price details.
-	@Before
+	/* This is to test the creation of product price details.
+	 * 
+	 */
 	@Test
 	public void testCreateProductPriceApi() throws JsonProcessingException {
 		logger.debug("testCreateProductPriceApi");
@@ -98,11 +104,12 @@ public class ProductsAPITest {
 
 	}
 
-	// This is to test the product API to get the whole product details.
-	// This involves mocking the external API
-	// This involves testcase for product price details from mongodb , NOSQL
-	// datastore.
-	// @After
+	/*
+	 * This is to test the product API to get the whole product details. This
+	 * involves invoking the external API This involves testcase for product
+	 * price details from mongodb , NOSQL datastore.
+	 * 
+	 */
 	@Test
 	public void testGetProductAndPriceDetails() {
 
@@ -113,8 +120,8 @@ public class ProductsAPITest {
 		// Test external API - START
 		// https://api.target.com/products/v3/13860428?fields=descriptions&id_type=TCIN&key=43cJWpLjH8Z8oR18KdrZDBKAgLLQKJjz
 		RestTemplate restTemplate = new RestTemplate();
-		String externalAPIUrl = "https://api.target.com/products/v3/" + productIdInput
-				+ "?fields=descriptions&id_type=TCIN&key=43cJWpLjH8Z8oR18KdrZDBKAgLLQKJjz";
+		String externalAPIUrl = Constants.HOST_NAME + Constants.REQUEST_PATH_URL + productIdInput
+				+ Constants.PARAMETERS_URL;
 		ResponseEntity<String> response = restTemplate.getForEntity(externalAPIUrl, String.class);
 
 		if (HttpStatus.OK == response.getStatusCode()) {
@@ -130,11 +137,9 @@ public class ProductsAPITest {
 				productNameFromAPI = items.get(0).get("general_description").toString();
 				productNameFromAPI = productNameFromAPI.substring(1, productNameFromAPI.length() - 1);
 			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.debug("JsonProcessingException", e.getMessage());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.debug("IOException", e.getMessage());
 			}
 
 			// start test case for accessing productId 15117729

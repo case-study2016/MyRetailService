@@ -10,6 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * @author Libin
+ * Entry point to Spring boot application, MyRetailApp
+ */
 @SpringBootApplication
 public class RetailApplication {
 	private static final Logger logger = LoggerFactory.getLogger(RetailApplication.class);

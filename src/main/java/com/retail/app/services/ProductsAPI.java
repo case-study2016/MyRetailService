@@ -24,6 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * @author Libin
+ * This class exposes Products API
+ * Added @CrossOrigin to avoid cross domain
+ * issues to client
+ */
+
 @CrossOrigin
 @RestController
 public class ProductsAPI {
@@ -34,7 +41,14 @@ public class ProductsAPI {
 
 	@Autowired
 	private ProductPriceInfoRepository productPriceInfoRepository;
-
+	
+	/**
+	 * This method retrieves product details 
+	 * It calls external API to retrieve product name
+	 * and invokes price details from NOSQL data store MongoDB
+	 * @param id
+	 * @return responseEntity
+	 */
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getProductAndPriceDetails(@PathVariable Integer id) throws Exception {
 		ResponseEntity<?> responseEntity = null;
@@ -58,8 +72,7 @@ public class ProductsAPI {
 			}
 		}
 
-		// Call pricing information from a NoSQL data store , MongoDB
-
+		// Call pricing information from a NoSQL data store, MongoDB
 		productPriceInfo = productDetailsManager.getProductPriceInfo(id.toString());
 		logger.debug("product Price from Mongo DB--" + productPriceInfo.getProductPrice());
 		if (productPriceInfo.getProductPrice() != null && productPriceInfo.getCurrencyCode() != null) {
@@ -71,8 +84,12 @@ public class ProductsAPI {
 		return responseEntity;
 
 	}
-
-	// This created product price details in DB
+	
+	/**
+	 * This method is used to create test data in MongoDB
+	 * @param productPriceMap
+	 * @return response
+	 */
 	@RequestMapping(value = "/products/price", method = RequestMethod.POST)
 	public Map<String, Object> createProductPriceInfo(@RequestBody Map<String, Object> productPriceMap) {
 		ProductPriceInfo productpriceinfo = new ProductPriceInfo(productPriceMap.get("productId").toString(),
@@ -85,7 +102,11 @@ public class ProductsAPI {
 		return response;
 	}
 
-	// This updated product price details in DB
+	/**
+	 * This method updates product price details in NOSQL data store - MongoDB
+	 * @param id
+	 * @return response
+	 */
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
 	public Map<String, Object> updateProductPriceInfo(@PathVariable Integer id,
 			@RequestBody ProductResponseTO productRequestTO) {
