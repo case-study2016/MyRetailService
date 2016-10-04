@@ -1,0 +1,17 @@
+{
+    "verbose":true,
+    "modelPackage": "com.homedepot.di.px.importorderservices.to",
+    "apiPackage": "com.homedepot.di.px.importorderservices",
+    "invokerPackage": "com.homedepot.di.px.importorderservices.services",
+    "sourceFolder": "src/main/java",
+    "systemProperties" : {
+        "swagger.codegen.jaxrs.sourcefolder" : "src/main/java",
+        "swagger.codegen.jaxrs.exceptionpackage" : "com.homedepot.di.px.importorderservices.exceptions",
+        "swagger.codegen.jaxrs.resources" : "com.homedepot.di.px.importorderservices.resources",
+        "swagger.codegen.jaxrs.impl.source" : "com.homedepot.di.px.importorderservices.processor",
+        "domain": "homedepot.com"
+    },
+    "importMappings" : {
+        "ApiResponseMessage" : "com.homedepot.di.px.importorderservices.ApiResponseMessage"
+    }
+}
