@@ -258,7 +258,7 @@ https://spring.io/blog/2015/10/19/springone2gx-2015-replay-securing-microservice
 5.Update readme file 
 6.Add Comments - Done
 7.Format code - Done
-8.Swagger UI 
+8.Swagger UI  -DONE http://localhost:8082/swagger-ui.html#/
 9.Host in PCF
 10.Hystrix
 11.Remove Sysouts. - Done
