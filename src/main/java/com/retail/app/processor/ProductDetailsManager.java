@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.MongoSocketOpenException;
 import com.retail.app.repository.ProductPriceInfoRepository;
 import com.retail.app.to.Item;
 import com.retail.app.to.ProductPriceInfo;
@@ -52,10 +53,17 @@ public class ProductDetailsManager {
 	 * Retrieve the product id ,product price and currency code from MongoDB
 	 * based on product id
 	 */
-	public ProductPriceInfo getProductPriceInfo(String id) {
+	public ProductPriceInfo getProductPriceInfo(String id) throws IllegalArgumentException, MongoSocketOpenException{
 		ProductPriceInfo productPriceInfo = null;
-
+        try{
 		productPriceInfo = productPriceInfoRepository.findOne(id);
+        }catch(IllegalArgumentException iaex){
+        	iaex.printStackTrace();
+        	throw new IllegalArgumentException("the product id searched is null");
+        }catch(MongoSocketOpenException mse){
+        	mse.printStackTrace();
+        	throw new MongoSocketOpenException("MongoDB is down", null, mse);
+        }
 		return productPriceInfo;
 	}
 

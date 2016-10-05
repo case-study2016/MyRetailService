@@ -264,3 +264,25 @@ https://spring.io/blog/2015/10/19/springone2gx-2015-replay-securing-microservice
 11.Remove Sysouts. - Done
 12.Update instructions to run the code in README.MD
 13. check homedepot names in files - Done
+14. Add db downtime error handling
+15. Add API urls 
+
+
+# MongoDB as a service
+mongodb://CloudFoundry_l6isgtl3_po8u9gi9_6271udl5:C2Q4AbjTRCL-SkOgOCcgvSbPn_mOL8Oe@ds049466.mlab.com:49466/CloudFoundry_l6isgtl3_po8u9gi9
+
+$ cf marketplace
+Getting services from marketplace in org testing / space testing as me...
+OK
+
+service       plans     description
+p-mongodb   default   MongoDB service
+
+$ cf create-service p-mongodb default mongodb
+
+https://github.com/pivotal-cf/cf-mongodb-example-app
+
+http://stackoverflow.com/questions/34823542/pivotal-cloud-foundry-with-mongo-db
+
+
+# Consume restful webservice https://spring.io/guides/gs/consuming-rest/
