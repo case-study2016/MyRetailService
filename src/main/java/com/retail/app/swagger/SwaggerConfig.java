@@ -1,4 +1,4 @@
-package io.swagger.configuration;
+package com.retail.app.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
