@@ -87,7 +87,7 @@ public class ProductsAPITest {
 
 		// Asserting the response of the API.
 		String message = apiResponse.get("message").toString();
-		assertEquals("Product Price Info created successfully", message);
+		assertEquals("Product Price Info Created successfully", message);
 		String productId = ((Map<String, Object>) apiResponse.get("productpriceinfo")).get("productId").toString();
 
 		assertNotNull(productId);
@@ -120,8 +120,7 @@ public class ProductsAPITest {
 		// Test external API - START
 		// https://api.target.com/products/v3/13860428?fields=descriptions&id_type=TCIN&key=43cJWpLjH8Z8oR18KdrZDBKAgLLQKJjz
 		RestTemplate restTemplate = new RestTemplate();
-		String externalAPIUrl = Constants.HOST_NAME + Constants.REQUEST_PATH_URL + productIdInput
-				+ Constants.PARAMETERS_URL;
+		String externalAPIUrl = "https://api.target.com/products/v3/"+productIdInput+"?fields=descriptions&id_type=TCIN&key=43cJWpLjH8Z8oR18KdrZDBKAgLLQKJjz";
 		ResponseEntity<String> response = restTemplate.getForEntity(externalAPIUrl, String.class);
 
 		if (HttpStatus.OK == response.getStatusCode()) {
