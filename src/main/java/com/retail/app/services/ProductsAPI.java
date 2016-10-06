@@ -11,6 +11,8 @@ import com.retail.app.to.CurrentPrice;
 import com.retail.app.to.ErrorResponseTO;
 import com.retail.app.to.ProductPriceInfo;
 import com.retail.app.to.ProductResponseTO;
+import com.retail.app.util.Constants;
+import com.sun.jersey.api.client.ClientHandlerException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -64,7 +66,7 @@ public class ProductsAPI {
 		ResponseEntity<?> responseEntity = null;
 		ProductPriceInfo productPriceInfo = null;
 		String output = null;
-		logger.debug("productId>>>>" + id);
+		logger.debug("productId => " + id);
 		// call api.target.com external API through ProductDetailsManager
 		// to get product name
 		ErrorResponseTO errorResponseTO = new ErrorResponseTO();
@@ -75,7 +77,7 @@ public class ProductsAPI {
 			if (output.indexOf("error :") != -1) {
 				errorResponseTO.setErrorDesc(output.substring(7, output.length()));
 				responseEntity = new ResponseEntity<>(errorResponseTO, HttpStatus.OK);
-				throw new NotFoundException("No product name found for product id "+id+" in external API");
+				throw new NotFoundException(Constants.NO_PRODUCT_NAME_FOUND + id);
 			} else {
 				productResponseTO.setId(id);
 				productResponseTO.setName(output);
@@ -86,9 +88,9 @@ public class ProductsAPI {
 		// Call pricing information from a NoSQL data store, MongoDB
 		productPriceInfo = productDetailsManager.getProductPriceInfo(id.toString());
 		if(productPriceInfo == null){
-			throw new NotFoundException("No value found in MongoDB for product id "+id.toString());
+			throw new NotFoundException(Constants.NO_PRODUCT_PRICE_FOUND_DB + id.toString());
 		}
-		logger.debug("product Price from Mongo DB--" + productPriceInfo.getProductPrice());
+		logger.debug("product Price from Mongo DB => " + productPriceInfo.getProductPrice());
 		if (productPriceInfo.getProductPrice() != null && productPriceInfo.getCurrencyCode() != null) {
 			CurrentPrice currentPrice = new CurrentPrice();
 			currentPrice.setCurrencyCode(productPriceInfo.getCurrencyCode());
@@ -111,7 +113,7 @@ public class ProductsAPI {
 				productPriceMap.get("currencyCode").toString());
 
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
-		response.put("message", "Product Price Info created successfully");
+		response.put("message", Constants.MSG_PRICE_CREATED_SUCCESS);
 		response.put("productpriceinfo", productPriceInfoRepository.save(productpriceinfo));
 		return response;
 	}
@@ -134,7 +136,7 @@ public class ProductsAPI {
 		}
 
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
-		response.put("message", "Product Price Info Updated successfully");
+		response.put("message", Constants.MSG_PRICE_UPDATED_SUCCESS);
 		response.put("productpriceinfo", productPriceInfoRepository.save(productpriceinfo));
 		return response;
 	}
@@ -148,7 +150,7 @@ public class ProductsAPI {
 	  public Map<String, String> deleteProductPriceInfo(@PathVariable("id") String id){
 		productPriceInfoRepository.delete(id);
 	    Map<String, String> response = new HashMap<String, String>();
-	    response.put("message", "Product Price deleted successfully");
+	    response.put("message", Constants.MSG_PRICE_DELETED_SUCCESS);
 	    
 	    return response;
 	  }	
@@ -165,7 +167,9 @@ public class ProductsAPI {
 		}else{
 			responseTO.setErrorCode(500);
 			if(ex instanceof DataAccessResourceFailureException){
-				responseTO.setErrorDesc("Mongo DB is down due to MongoSocket Connection Exception");
+				responseTO.setErrorDesc(Constants.ERR_MSG_DB_DOWN);
+			}else if(ex instanceof ClientHandlerException){
+				responseTO.setErrorDesc(ex.getMessage());
 			}
 			return new ResponseEntity<ErrorResponseTO>(responseTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -175,7 +179,7 @@ public class ProductsAPI {
 	public ResponseEntity<ErrorResponseTO> validationBadRequestHandler(Exception ex) throws IOException {
 		 ErrorResponseTO responseTO = new ErrorResponseTO();
 		 logger.error("Bad Request");
-	     responseTO.setErrorDesc("Bad Request" + ex.getMessage());
+	     responseTO.setErrorDesc(Constants.BAD_REQUEST + ex.getMessage());
 		
 		return new ResponseEntity<ErrorResponseTO>(responseTO, HttpStatus.BAD_REQUEST);
 	}	
@@ -188,7 +192,7 @@ public class ProductsAPI {
 			responseTO.setErrorCode(404);
 
 		} else {
-			responseTO.setErrorDesc("Invalid Request");
+			responseTO.setErrorDesc(Constants.INVALID_REQUEST);
 			responseTO.setErrorCode(1);
 		}
 		return new ResponseEntity<ErrorResponseTO>(responseTO, HttpStatus.NOT_FOUND);

@@ -3,13 +3,17 @@ package com.retail.app.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.retail.app.to.Item;
 import com.retail.app.to.ProductsTO;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -24,15 +28,10 @@ public final class WebServiceUtil {
 
 	private static final Logger logger = Logger.getLogger(WebServiceUtil.class);
 
-	public static void printLoggerWhenDebugEnabled(Logger logger, String log) {
-		if (logger.isDebugEnabled()) {
-			logger.debug(log);
-		}
-	}
-
+	@HystrixCommand(fallbackMethod ="generateWebServiceCallForProductNameFallBack")
 	public List<Item> generateWebServiceCallForProductName(String url) throws Exception {
 		List<Item> itemTOList = new ArrayList<Item>();
-		printLoggerWhenDebugEnabled(logger, "generateWebServiceCallForProductName starts");
+		logger.debug("generateWebServiceCallForProductName starts");
 		ClientResponse clientResponse = null;
 		Gson gson = new Gson();
 		long startTime = System.currentTimeMillis();
@@ -54,16 +53,32 @@ public final class WebServiceUtil {
 				itemTOList = productsTO.getProductCompositeResponse().getItems();
 			}
 
-			printLoggerWhenDebugEnabled(logger, "Client response :::" + clientResponse);
+			logger.debug("Client response :::" + clientResponse);
 
 			endTime = System.currentTimeMillis();
 
-			printLoggerWhenDebugEnabled(logger, "generateWebServiceCallForProductName ends");
+			logger.debug("generateWebServiceCallForProductName ends");
 			return itemTOList;
 		} catch (Exception e) {
-			throw new Exception("Bad Request");
+			if(e instanceof ClientHandlerException){
+				throw new ClientHandlerException(Constants.API_NOT_REACHABLE);
+			}else{
+				throw new Exception(Constants.BAD_REQUEST);
+			}
 		}
 
+	}
+	
+	public ClientResponse triggerMasterDataServiceFallBack(String serviceURL, String hostURI,
+			MultivaluedMap<String, String> queryParams)
+	{
+		commonfallBack(serviceURL);
+		return null;
+	}
+	
+	public void commonfallBack(String serviceURL) 
+	{
+		logger.error("This webservice url is not reachable :: "+serviceURL);
 	}
 
 }

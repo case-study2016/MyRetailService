@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+
 /**
  * @author Libin
  * Entry point to Spring boot application, MyRetailApp
@@ -23,14 +24,14 @@ public class RetailApplication {
 		logger.error("Message logged at ERROR level");
 		logger.warn("Message logged at WARN level");
 		logger.info("Message logged at INFO level");
-		logger.debug("Message logged at DEBUG level");
+		logger.debug("Message logged at DEBUG level");		
 	}
 
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 
-			logger.debug("nspect the beans provided by Spring Boot:");
+			logger.debug("Inspect the beans provided by Spring Boot:");
 
 			String[] beanNames = ctx.getBeanDefinitionNames();
 			Arrays.sort(beanNames);

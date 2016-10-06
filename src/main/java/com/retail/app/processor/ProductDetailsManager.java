@@ -43,7 +43,7 @@ public class ProductDetailsManager {
 				errorMessage = itemList.get(0).getErrors().get(0).getMessage();
 				return "error :" + errorMessage;
 			}
-			logger.debug("Product Name >>>" + itemList.get(0).getGeneralDescription());
+			logger.debug("Product Name => " + itemList.get(0).getGeneralDescription());
 			productName = itemList.get(0).getGeneralDescription();
 		}
 		return productName;
@@ -59,10 +59,10 @@ public class ProductDetailsManager {
 		productPriceInfo = productPriceInfoRepository.findOne(id);
         }catch(IllegalArgumentException iaex){
         	iaex.printStackTrace();
-        	throw new IllegalArgumentException("the product id searched is null");
+        	throw new IllegalArgumentException(Constants.INVALID_PRODUCT_ID);
         }catch(MongoSocketOpenException mse){
         	mse.printStackTrace();
-        	throw new MongoSocketOpenException("MongoDB is down", null, mse);
+        	throw new MongoSocketOpenException(Constants.ERR_MSG_DB_DOWN, null, mse);
         }
 		return productPriceInfo;
 	}
