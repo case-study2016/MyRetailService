@@ -125,10 +125,13 @@
  15. You may use different dbs for real application and test case execution by changing the 
      db properties in application.properties file as shown below.
  
-	  Use this for Real Application
-	   spring.data.mongodb.database=ProductPrice
-	  Use this for Test Case
-	  spring.data.mongodb.database=ProductPriceTest  //comment this while running real application
+  <Use this for Real Application>
+  
+   spring.data.mongodb.database=ProductPrice
+   
+  <Use this for Test Case>
+  
+  spring.data.mongodb.database=ProductPriceTest  //comment this while running real application
 	  
  
  
